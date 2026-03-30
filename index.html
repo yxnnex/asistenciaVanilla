@@ -28,7 +28,6 @@
             align-items: center;
         }
 
-        /* ESTILO DEL LOGO IGUAL A LA CALCULADORA */
         .logo-neon { 
             display: block; 
             margin: 20px auto; 
@@ -156,17 +155,23 @@
         <label>Seleccionar Empleada</label>
         <select id="empleada">
             <option value="">-- Nombre Apellido --</option>
-            <option>Anya</option><option>Ashanti</option><option>Clep</option>
-            <option>Mei</option><option>Jade</option><option>Raven</option>
-            <option>Sadie</option><option>Saher</option><option>Sheila</option>
+            <option>Anya</option>
+            <option>Ashanti</option>
+            <option>Cleo</option>
+            <option>Mei</option>
+            <option>Jade</option>
+            <option>Raven</option>
+            <option>Sadie</option>
+            <option>Saher</option>
+            <option>Sheila</option>
             <option>Valentina</option>
         </select>
 
         <div class="opciones-pago">
             <label class="check-container"><input type="checkbox" id="barra" value="0"> Barra <span class="precio-tag">$0</span></label>
             <label class="check-container"><input type="checkbox" id="baileEscenario"> Baile Escenario <span id="pEscenario" class="precio-tag"></span></label>
-            <label class="check-container"><input type="checkbox" id="bailePrivado"> Baile Privado (Solo baile) <span id="pPrivadoSolo" class="precio-tag"></span></label>
-            <label class="check-container"><input type="checkbox" id="privadoCompleto"> Privado (Completo) <span id="pCompleto" class="precio-tag"></span></label>
+            <label class="check-container"><input type="checkbox" id="bailePrivado"> Baile Privado <span id="pPrivadoSolo" class="precio-tag"></span></label>
+            <label class="check-container"><input type="checkbox" id="privadoCompleto"> Privado Completo <span id="pCompleto" class="precio-tag"></span></label>
         </div>
 
         <div class="total-box">
@@ -183,11 +188,11 @@
     </div>
 
     <script>
-        // --- CONFIGURA LOS MONTOS AQUÍ ---
+        // --- PRECIOS ACTUALIZADOS ---
         const PRECIOS = {
             escenario: 5000,       
-            privadoSolo: 15000,     
-            completo: 35000         
+            privadoSolo: 25000,     
+            completo: 60000         
         };
 
         document.getElementById('pEscenario').innerText = `$${PRECIOS.escenario}`;
