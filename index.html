@@ -188,7 +188,6 @@
     </div>
 
     <script>
-        // --- PRECIOS ACTUALIZADOS ---
         const PRECIOS = {
             escenario: 5000,       
             privadoSolo: 25000,     
@@ -259,20 +258,36 @@
 
         function descargarReporte() {
             if(registrosGlobal.length === 0) return;
-            let txt = "VANILLA UNICORN - REPORTE DE ASISTENCIA\n";
-            txt += "========================================\n\n";
-            let suma = 0;
+
+            // --- LÓGICA DE AGRUPAMIENTO ---
+            const agrupado = {};
             registrosGlobal.forEach(r => {
-                txt += `[${r.hora}] ${r.nombre} | ${r.servicios} | Pago: $${r.monto}\n`;
-                suma += r.monto;
+                if (!agrupado[r.nombre]) {
+                    agrupado[r.nombre] = { servicios: [], total: 0 };
+                }
+                agrupado[r.nombre].servicios.push(r.servicios);
+                agrupado[r.nombre].total += r.monto;
             });
-            txt += `\n========================================\n`;
-            txt += `TOTAL GENERAL A PAGAR: $${suma}`;
+
+            let txt = "VANILLA UNICORN - REPORTE CONSOLIDADO\n";
+            txt += "========================================\n\n";
+            let sumaGeneral = 0;
+
+            for (const nombre in agrupado) {
+                const data = agrupado[nombre];
+                txt += `EMPLEADA: ${nombre}\n`;
+                txt += `ACTIVIDADES: ${data.servicios.join(" | ")}\n`;
+                txt += `TOTAL A PAGAR: $${data.total}\n`;
+                txt += `----------------------------------------\n`;
+                sumaGeneral += data.total;
+            }
+
+            txt += `\nTOTAL GENERAL DEL TURNO: $${sumaGeneral}`;
 
             const blob = new Blob([txt], {type: "text/plain"});
             const a = document.createElement("a");
             a.href = URL.createObjectURL(blob);
-            a.download = `Reporte_VU_${new Date().toLocaleDateString().replace(/\//g, '-')}.txt`;
+            a.download = `Reporte_Consolidado_VU.txt`;
             a.click();
         }
     </script>
