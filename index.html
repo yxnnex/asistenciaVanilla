@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vanilla Unicorn – Registro de Asistencia</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pangolin&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --neon-pink: #ff71ce;
+            --neon-blue: #00f3ff;
+            --neon-purple: #b967ff;
+            --dark-bg: #050505;
+        }
+
+        body { 
+            font-family: 'Pangolin', cursive; 
+            background: var(--dark-bg); 
+            color: var(--neon-pink); 
+            margin: 0; 
+            padding: 20px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 { 
+            text-align: center; 
+            font-size: 38px; 
+            color: #fff; 
+            text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink);
+            margin-bottom: 20px;
+        }
+
+        .container {
+            background: rgba(20, 20, 20, 0.9);
+            border: 2px solid var(--neon-pink);
+            border-radius: 25px;
+            padding: 25px;
+            box-shadow: 0 0 20px rgba(255, 113, 206, 0.2);
+            width: 95%;
+            max-width: 500px;
+            margin-bottom: 30px;
+        }
+
+        label { display: block; margin-bottom: 10px; font-size: 18px; color: #fff; }
+
+        select, input[type="checkbox"] { cursor: pointer; }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid var(--neon-pink);
+            background: #1a1a1a;
+            color: #fff;
+            font-family: 'Pangolin', cursive;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .opciones-pago {
+            background: rgba(255, 113, 206, 0.05);
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px dashed var(--neon-pink);
+            margin-bottom: 20px;
+        }
+
+        .check-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 17px;
+        }
+
+        .check-container input { margin-right: 12px; width: 18px; height: 18px; accent-color: var(--neon-pink); }
+
+        .total-box { text-align: center; border-top: 1px solid var(--neon-pink); padding-top: 15px; }
+        .total-monto { font-size: 40px; color: #fff; text-shadow: 0 0 10px var(--neon-blue); display: block; }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 12px;
+            font-family: 'Pangolin', cursive;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-registrar { background: var(--neon-pink); color: #000; border: none; box-shadow: 0 0 10px var(--neon-pink); }
+        .btn-registrar:hover { transform: scale(1.02); box-shadow: 0 0 20px var(--neon-pink); }
+
+        /* SECCIÓN HISTORIAL */
+        .historial-container {
+            width: 95%;
+            max-width: 500px;
+            background: rgba(10, 10, 10, 0.9);
+            border: 1px solid var(--neon-blue);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+        }
+
+        h2 { font-size: 22px; color: var(--neon-blue); text-align: center; text-transform: uppercase; margin-top: 0; }
+
+        #listaPagos {
+            list-style: none;
+            padding: 0;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .pago-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            border-left: 3px solid var(--neon-blue);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-descargar {
+            background: transparent;
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            font-size: 14px;
+        }
+
+        .btn-descargar:hover { background: var(--neon-blue); color: #000; }
+    </style>
+</head>
+<body>
+
+    <h1>Vanilla Unicorn <br> <span style="font-size: 18px; color: var(--neon-blue);">Registro Diario</span></h1>
+
+    <div class="container">
+        <label>Empleada</label>
+        <select id="empleada">
+            <option value="">Seleccionar...</option>
+            <option>Anya</option><option>Ashanti</option><option>Clep</option>
+            <option>Mei</option><option>Jade</option><option>Raven</option>
+            <option>Sadie</option><option>Saher</option><option>Sheila</option>
+            <option>Valentina</option>
+        </select>
+
+        <div class="opciones-pago">
+            <label class="check-container"><input type="checkbox" id="barra"> Barra ($0)</label>
+            <label class="check-container"><input type="checkbox" id="baile"> Baile ($<span id="pBaile"></span>)</label>
+            <label class="check-container"><input type="checkbox" id="privado"> Privado ($<span id="pPrivado"></span>)</label>
+        </div>
+
+        <div class="total-box">
+            <span class="total-monto" id="montoTotal">$0</span>
+            <button class="btn-registrar" onclick="registrarPago()">REGISTRAR PAGO</button>
+        </div>
+    </div>
+
+    <div class="historial-container">
+        <h2>Historial de hoy</h2>
+        <ul id="listaPagos">
+            </ul>
+        <button class="btn-descargar" onclick="descargarReporte()">DESCARGAR REPORTE .TXT</button>
+    </div>
+
+    <script>
+        // --- PRECIOS (Modifícalos aquí) ---
+        const PRECIO_BAILE = 1000; 
+        const PRECIO_PRIVADO = 3000; 
+
+        document.getElementById('pBaile').innerText = PRECIO_BAILE;
+        document.getElementById('pPrivado').innerText = PRECIO_PRIVADO;
+
+        // Listener para actualizar el total visualmente al marcar checks
+        const checks = ['baile', 'privado'];
+        checks.forEach(id => {
+            document.getElementById(id).addEventListener('change', () => {
+                let t = 0;
+                if(document.getElementById('baile').checked) t += PRECIO_BAILE;
+                if(document.getElementById('privado').checked) t += PRECIO_PRIVADO;
+                document.getElementById('montoTotal').innerText = `$${t}`;
+            });
+        });
+
+        let registrosGlobal = [];
+
+        function registrarPago() {
+            const nombre = document.getElementById('empleada').value;
+            const bBarra = document.getElementById('barra').checked;
+            const bBaile = document.getElementById('baile').checked;
+            const bPrivado = document.getElementById('privado').checked;
+            
+            if(!nombre) { alert("Selecciona una empleada"); return; }
+            if(!bBarra && !bBaile && !bPrivado) { alert("Selecciona al menos una actividad"); return; }
+
+            let total = 0;
+            let actividades = [];
+            if(bBarra) actividades.push("Barra");
+            if(bBaile) { actividades.push("Baile"); total += PRECIO_BAILE; }
+            if(bPrivado) { actividades.push("Privado"); total += PRECIO_PRIVADO; }
+
+            const registro = {
+                nombre: nombre,
+                actividades: actividades.join(", "),
+                total: total,
+                hora: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+            };
+
+            registrosGlobal.push(registro);
+            actualizarLista();
+            
+            // Reset campos
+            document.getElementById('barra').checked = false;
+            document.getElementById('baile').checked = false;
+            document.getElementById('privado').checked = false;
+            document.getElementById('montoTotal').innerText = "$0";
+        }
+
+        function actualizarLista() {
+            const lista = document.getElementById('listaPagos');
+            lista.innerHTML = "";
+            registrosGlobal.forEach(r => {
+                lista.innerHTML += `
+                    <li class="pago-item">
+                        <span><strong>${r.nombre}</strong> (${r.actividades})</span>
+                        <span style="color:var(--neon-blue)">$${r.total}</span>
+                    </li>
+                `;
+            });
+        }
+
+        function descargarReporte() {
+            if(registrosGlobal.length === 0) return;
+            let contenido = "REPORTE DE PAGOS - VANILLA UNICORN\n\n";
+            let sumaTotal = 0;
+            registrosGlobal.forEach(r => {
+                contenido += `[${r.hora}] ${r.nombre} - ${r.actividades} - Total: $${r.total}\n`;
+                sumaTotal += r.total;
+            });
+            contenido += `\nTOTAL GENERAL A PAGAR: $${sumaTotal}`;
+
+            const blob = new Blob([contenido], {type: "text/plain"});
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "Reporte_VanillaUnicorn.txt";
+            link.click();
+        }
+    </script>
+</body>
+</html>
