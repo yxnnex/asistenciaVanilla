@@ -155,15 +155,9 @@
         <label>Seleccionar Empleada</label>
         <select id="empleada">
             <option value="">-- Nombre Apellido --</option>
-            <option>Anya</option>
-            <option>Ashanti</option>
-            <option>Cleo</option>
-            <option>Jade</option>
-            <option>Mei</option>
-            <option>Raven</option>
-            <option>Sadie</option>
-            <option>Saher</option>
-            <option>Sheila</option>
+            <option>Anya</option><option>Ashanti</option><option>Cleo</option>
+            <option>Jade</option><option>Mei</option><option>Raven</option>
+            <option>Sadie</option><option>Saher</option><option>Sheila</option>
             <option>Valentina</option>
         </select>
 
@@ -243,7 +237,7 @@
             registrosGlobal.slice().reverse().forEach(r => {
                 lista.innerHTML += `
                     <li class="pago-item">
-                        <span><strong>${r.nombre}</strong><br><small style="color:#888">${r.servicios}</small></span>
+                        <span><strong>${r.nombre}</strong><br><small style="color:#888">${r.servicios} [${r.hora}]</small></span>
                         <span style="color:var(--neon-blue); font-weight:bold;">$${r.monto}</span>
                     </li>
                 `;
@@ -259,35 +253,39 @@
         function descargarReporte() {
             if(registrosGlobal.length === 0) return;
 
-            // --- LÓGICA DE AGRUPAMIENTO ---
-            const agrupado = {};
+            let txt = "VANILLA UNICORN - REPORTE DE ASISTENCIA\n";
+            txt += "========================================\n\n";
+            
+            // 1. LISTADO CRONOLÓGICO (Como lo tenías antes)
+            txt += "DETALLE DE SERVICIOS:\n";
+            let sumaTotalTurno = 0;
+            const resumenNombres = {};
+
             registrosGlobal.forEach(r => {
-                if (!agrupado[r.nombre]) {
-                    agrupado[r.nombre] = { servicios: [], total: 0 };
-                }
-                agrupado[r.nombre].servicios.push(r.servicios);
-                agrupado[r.nombre].total += r.monto;
+                txt += `[${r.hora}] ${r.nombre} | ${r.servicios} | Pago: $${r.monto}\n`;
+                sumaTotalTurno += r.monto;
+
+                // Preparar datos para el resumen final
+                if (!resumenNombres[r.nombre]) resumenNombres[r.nombre] = 0;
+                resumenNombres[r.nombre] += r.monto;
             });
 
-            let txt = "VANILLA UNICORN - REPORTE CONSOLIDADO\n";
-            txt += "========================================\n\n";
-            let sumaGeneral = 0;
+            txt += "\n========================================\n";
+            txt += "RESUMEN TOTAL POR EMPLEADA:\n";
+            txt += "========================================\n";
 
-            for (const nombre in agrupado) {
-                const data = agrupado[nombre];
-                txt += `EMPLEADA: ${nombre}\n`;
-                txt += `ACTIVIDADES: ${data.servicios.join(" | ")}\n`;
-                txt += `TOTAL A PAGAR: $${data.total}\n`;
-                txt += `----------------------------------------\n`;
-                sumaGeneral += data.total;
+            // 2. RESUMEN FINAL POR NOMBRE
+            for (const chica in resumenNombres) {
+                txt += `${chica.padEnd(15)} Total a pagar: $${resumenNombres[chica]}\n`;
             }
 
-            txt += `\nTOTAL GENERAL DEL TURNO: $${sumaGeneral}`;
+            txt += "\n========================================\n";
+            txt += `TOTAL GENERAL CAJA: $${sumaTotalTurno}`;
 
             const blob = new Blob([txt], {type: "text/plain"});
             const a = document.createElement("a");
             a.href = URL.createObjectURL(blob);
-            a.download = `Reporte_Consolidado_VU.txt`;
+            a.download = `Reporte_VU_${new Date().toLocaleDateString().replace(/\//g, '-')}.txt`;
             a.click();
         }
     </script>
