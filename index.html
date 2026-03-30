@@ -43,13 +43,11 @@
             padding: 25px;
             box-shadow: 0 0 20px rgba(255, 113, 206, 0.2);
             width: 95%;
-            max-width: 500px;
+            max-width: 550px;
             margin-bottom: 30px;
         }
 
         label { display: block; margin-bottom: 10px; font-size: 18px; color: #fff; }
-
-        select, input[type="checkbox"] { cursor: pointer; }
 
         select {
             width: 100%;
@@ -61,6 +59,7 @@
             font-family: 'Pangolin', cursive;
             font-size: 18px;
             margin-bottom: 20px;
+            outline: none;
         }
 
         .opciones-pago {
@@ -74,22 +73,23 @@
         .check-container {
             display: flex;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             font-size: 17px;
+            color: #ddd;
+            cursor: pointer;
         }
 
-        .check-container input { margin-right: 12px; width: 18px; height: 18px; accent-color: var(--neon-pink); }
+        .check-container input { margin-right: 12px; width: 20px; height: 20px; accent-color: var(--neon-pink); }
 
         .total-box { text-align: center; border-top: 1px solid var(--neon-pink); padding-top: 15px; }
-        .total-monto { font-size: 40px; color: #fff; text-shadow: 0 0 10px var(--neon-blue); display: block; }
+        .total-monto { font-size: 45px; color: #fff; text-shadow: 0 0 10px var(--neon-blue); display: block; margin-bottom: 15px; }
 
         button {
             width: 100%;
-            padding: 12px;
-            margin-top: 10px;
-            border-radius: 12px;
+            padding: 15px;
+            border-radius: 15px;
             font-family: 'Pangolin', cursive;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
             cursor: pointer;
             transition: 0.3s;
@@ -101,7 +101,7 @@
         /* SECCIÓN HISTORIAL */
         .historial-container {
             width: 95%;
-            max-width: 500px;
+            max-width: 550px;
             background: rgba(10, 10, 10, 0.9);
             border: 1px solid var(--neon-blue);
             border-radius: 20px;
@@ -114,39 +114,44 @@
         #listaPagos {
             list-style: none;
             padding: 0;
-            max-height: 250px;
+            max-height: 300px;
             overflow-y: auto;
         }
 
         .pago-item {
             background: rgba(255, 255, 255, 0.05);
-            padding: 10px;
+            padding: 12px;
             border-radius: 8px;
             margin-bottom: 8px;
-            font-size: 14px;
-            border-left: 3px solid var(--neon-blue);
+            font-size: 15px;
+            border-left: 4px solid var(--neon-blue);
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
 
         .btn-descargar {
             background: transparent;
             border: 1px solid var(--neon-blue);
             color: var(--neon-blue);
-            font-size: 14px;
+            font-size: 16px;
+            margin-top: 15px;
         }
 
         .btn-descargar:hover { background: var(--neon-blue); color: #000; }
+        
+        .precio-tag { margin-left: auto; color: var(--neon-blue); font-size: 14px; }
     </style>
 </head>
 <body>
 
-    <h1>Vanilla Unicorn <br> <span style="font-size: 18px; color: var(--neon-blue);">Registro Diario</span></h1>
+    <img src="VU_LOGO_OFFICIAL.png" style="width: 120px; margin-bottom: 10px;" alt="VU Logo">
+    <h1>Vanilla Unicorn <br> <span style="font-size: 18px; color: var(--neon-blue);">Gestión de Asistencia</span></h1>
 
     <div class="container">
-        <label>Empleada</label>
+        <label>Seleccionar Empleada</label>
         <select id="empleada">
-            <option value="">Seleccionar...</option>
+            <option value="">-- Nombre Apellido --</option>
             <option>Anya</option><option>Ashanti</option><option>Clep</option>
             <option>Mei</option><option>Jade</option><option>Raven</option>
             <option>Sadie</option><option>Saher</option><option>Sheila</option>
@@ -154,40 +159,48 @@
         </select>
 
         <div class="opciones-pago">
-            <label class="check-container"><input type="checkbox" id="barra"> Barra ($0)</label>
-            <label class="check-container"><input type="checkbox" id="baile"> Baile ($<span id="pBaile"></span>)</label>
-            <label class="check-container"><input type="checkbox" id="privado"> Privado ($<span id="pPrivado"></span>)</label>
+            <label class="check-container"><input type="checkbox" id="barra" value="0"> Barra <span class="precio-tag">$0</span></label>
+            <label class="check-container"><input type="checkbox" id="baileEscenario" class="costo"> Baile Escenario <span id="pEscenario" class="precio-tag"></span></label>
+            <label class="check-container"><input type="checkbox" id="bailePrivado" class="costo"> Baile Privado (Solo baile) <span id="pPrivadoSolo" class="precio-tag"></span></label>
+            <label class="check-container"><input type="checkbox" id="privadoCompleto" class="costo"> Privado (Completo) <span id="pCompleto" class="precio-tag"></span></label>
         </div>
 
         <div class="total-box">
+            <span style="color: #bbb; font-size: 14px;">TOTAL A PAGAR</span>
             <span class="total-monto" id="montoTotal">$0</span>
-            <button class="btn-registrar" onclick="registrarPago()">REGISTRAR PAGO</button>
+            <button class="btn-registrar" onclick="registrarPago()">REGISTRAR Y LIMPIAR</button>
         </div>
     </div>
 
     <div class="historial-container">
-        <h2>Historial de hoy</h2>
+        <h2>Historial de Pagos</h2>
         <ul id="listaPagos">
             </ul>
         <button class="btn-descargar" onclick="descargarReporte()">DESCARGAR REPORTE .TXT</button>
     </div>
 
     <script>
-        // --- PRECIOS (Modifícalos aquí) ---
-        const PRECIO_BAILE = 1000; 
-        const PRECIO_PRIVADO = 3000; 
+        // --- CONFIGURA LOS MONTOS AQUÍ ---
+        const PRECIOS = {
+            escenario: 0,       // Baile escenario
+            privadoSolo: 0,     // Baile privado solo
+            completo: 0         // Privado completo
+        };
 
-        document.getElementById('pBaile').innerText = PRECIO_BAILE;
-        document.getElementById('pPrivado').innerText = PRECIO_PRIVADO;
+        // Mostrar precios en la interfaz
+        document.getElementById('pEscenario').innerText = `$${PRECIOS.escenario}`;
+        document.getElementById('pPrivadoSolo').innerText = `$${PRECIOS.privadoSolo}`;
+        document.getElementById('pCompleto').innerText = `$${PRECIOS.completo}`;
 
-        // Listener para actualizar el total visualmente al marcar checks
-        const checks = ['baile', 'privado'];
-        checks.forEach(id => {
-            document.getElementById(id).addEventListener('change', () => {
-                let t = 0;
-                if(document.getElementById('baile').checked) t += PRECIO_BAILE;
-                if(document.getElementById('privado').checked) t += PRECIO_PRIVADO;
-                document.getElementById('montoTotal').innerText = `$${t}`;
+        // Lógica de actualización de precio en tiempo real
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', () => {
+                let total = 0;
+                if(document.getElementById('baileEscenario').checked) total += PRECIOS.escenario;
+                if(document.getElementById('bailePrivado').checked) total += PRECIOS.privadoSolo;
+                if(document.getElementById('privadoCompleto').checked) total += PRECIOS.completo;
+                document.getElementById('montoTotal').innerText = `$${total}`;
             });
         });
 
@@ -195,64 +208,66 @@
 
         function registrarPago() {
             const nombre = document.getElementById('empleada').value;
-            const bBarra = document.getElementById('barra').checked;
-            const bBaile = document.getElementById('baile').checked;
-            const bPrivado = document.getElementById('privado').checked;
-            
-            if(!nombre) { alert("Selecciona una empleada"); return; }
-            if(!bBarra && !bBaile && !bPrivado) { alert("Selecciona al menos una actividad"); return; }
+            if(!nombre) { alert("Elige una empleada primero."); return; }
 
+            let acts = [];
             let total = 0;
-            let actividades = [];
-            if(bBarra) actividades.push("Barra");
-            if(bBaile) { actividades.push("Baile"); total += PRECIO_BAILE; }
-            if(bPrivado) { actividades.push("Privado"); total += PRECIO_PRIVADO; }
+
+            if(document.getElementById('barra').checked) acts.push("Barra");
+            if(document.getElementById('baileEscenario').checked) { acts.push("Escenario"); total += PRECIOS.escenario; }
+            if(document.getElementById('bailePrivado').checked) { acts.push("B. Privado"); total += PRECIOS.privadoSolo; }
+            if(document.getElementById('privadoCompleto').checked) { acts.push("P. Completo"); total += PRECIOS.completo; }
+
+            if(acts.length === 0) { alert("Selecciona al menos una actividad."); return; }
 
             const registro = {
                 nombre: nombre,
-                actividades: actividades.join(", "),
-                total: total,
+                servicios: acts.join(" + "),
+                monto: total,
                 hora: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
             };
 
             registrosGlobal.push(registro);
             actualizarLista();
-            
-            // Reset campos
-            document.getElementById('barra').checked = false;
-            document.getElementById('baile').checked = false;
-            document.getElementById('privado').checked = false;
-            document.getElementById('montoTotal').innerText = "$0";
+            resetForm();
         }
 
         function actualizarLista() {
             const lista = document.getElementById('listaPagos');
             lista.innerHTML = "";
-            registrosGlobal.forEach(r => {
+            registrosGlobal.slice().reverse().forEach(r => {
                 lista.innerHTML += `
                     <li class="pago-item">
-                        <span><strong>${r.nombre}</strong> (${r.actividades})</span>
-                        <span style="color:var(--neon-blue)">$${r.total}</span>
+                        <span><strong>${r.nombre}</strong><br><small style="color:#888">${r.servicios}</small></span>
+                        <span style="color:var(--neon-blue); font-weight:bold;">$${r.monto}</span>
                     </li>
                 `;
             });
         }
 
+        function resetForm() {
+            document.getElementById('empleada').selectedIndex = 0;
+            checkboxes.forEach(cb => cb.checked = false);
+            document.getElementById('montoTotal').innerText = "$0";
+        }
+
         function descargarReporte() {
             if(registrosGlobal.length === 0) return;
-            let contenido = "REPORTE DE PAGOS - VANILLA UNICORN\n\n";
-            let sumaTotal = 0;
+            let txt = "VANILLA UNICORN - REPORTE DE ASISTENCIA\n";
+            txt += "========================================\n\n";
+            let suma = 0;
             registrosGlobal.forEach(r => {
-                contenido += `[${r.hora}] ${r.nombre} - ${r.actividades} - Total: $${r.total}\n`;
-                sumaTotal += r.total;
+                txt += `[${r.hora}] ${r.nombre} | ${r.servicios} | Pago: $${r.monto}\n`;
+                suma += r.monto;
             });
-            contenido += `\nTOTAL GENERAL A PAGAR: $${sumaTotal}`;
+            txt += `\n========================================\n`;
+            txt += `TOTAL GENERAL A PAGAR: $${suma}`;
 
-            const blob = new Blob([contenido], {type: "text/plain"});
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = "Reporte_VanillaUnicorn.txt";
-            link.click();
+            const blob = new Blob([txt], {type: "text/plain"});
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = `Reporte_VU_${new Date().toLocaleDateString().replace(/\//g, '-')}.txt`;
+            a.click();
         }
     </script>
 </body>
