@@ -28,6 +28,14 @@
             align-items: center;
         }
 
+        /* ESTILO DEL LOGO IGUAL A LA CALCULADORA */
+        .logo-neon { 
+            display: block; 
+            margin: 20px auto; 
+            width: 160px; 
+            filter: drop-shadow(0 0 15px rgba(255, 113, 206, 0.9)); 
+        }
+
         h1 { 
             text-align: center; 
             font-size: 38px; 
@@ -60,6 +68,7 @@
             font-size: 18px;
             margin-bottom: 20px;
             outline: none;
+            box-shadow: inset 0 0 5px var(--neon-pink);
         }
 
         .opciones-pago {
@@ -98,7 +107,6 @@
         .btn-registrar { background: var(--neon-pink); color: #000; border: none; box-shadow: 0 0 10px var(--neon-pink); }
         .btn-registrar:hover { transform: scale(1.02); box-shadow: 0 0 20px var(--neon-pink); }
 
-        /* SECCIÓN HISTORIAL */
         .historial-container {
             width: 95%;
             max-width: 550px;
@@ -111,12 +119,7 @@
 
         h2 { font-size: 22px; color: var(--neon-blue); text-align: center; text-transform: uppercase; margin-top: 0; }
 
-        #listaPagos {
-            list-style: none;
-            padding: 0;
-            max-height: 300px;
-            overflow-y: auto;
-        }
+        #listaPagos { list-style: none; padding: 0; max-height: 300px; overflow-y: auto; }
 
         .pago-item {
             background: rgba(255, 255, 255, 0.05);
@@ -140,12 +143,13 @@
 
         .btn-descargar:hover { background: var(--neon-blue); color: #000; }
         
-        .precio-tag { margin-left: auto; color: var(--neon-blue); font-size: 14px; }
+        .precio-tag { margin-left: auto; color: var(--neon-blue); font-size: 14px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <img src="VU_LOGO_OFFICIAL.png" style="width: 120px; margin-bottom: 10px;" alt="VU Logo">
+    <img src="VU_LOGO_OFFICIAL.png" class="logo-neon" alt="Vanilla Unicorn">
+    
     <h1>Vanilla Unicorn <br> <span style="font-size: 18px; color: var(--neon-blue);">Gestión de Asistencia</span></h1>
 
     <div class="container">
@@ -160,9 +164,9 @@
 
         <div class="opciones-pago">
             <label class="check-container"><input type="checkbox" id="barra" value="0"> Barra <span class="precio-tag">$0</span></label>
-            <label class="check-container"><input type="checkbox" id="baileEscenario" class="costo"> Baile Escenario <span id="pEscenario" class="precio-tag"></span></label>
-            <label class="check-container"><input type="checkbox" id="bailePrivado" class="costo"> Baile Privado (Solo baile) <span id="pPrivadoSolo" class="precio-tag"></span></label>
-            <label class="check-container"><input type="checkbox" id="privadoCompleto" class="costo"> Privado (Completo) <span id="pCompleto" class="precio-tag"></span></label>
+            <label class="check-container"><input type="checkbox" id="baileEscenario"> Baile Escenario <span id="pEscenario" class="precio-tag"></span></label>
+            <label class="check-container"><input type="checkbox" id="bailePrivado"> Baile Privado (Solo baile) <span id="pPrivadoSolo" class="precio-tag"></span></label>
+            <label class="check-container"><input type="checkbox" id="privadoCompleto"> Privado (Completo) <span id="pCompleto" class="precio-tag"></span></label>
         </div>
 
         <div class="total-box">
@@ -174,25 +178,22 @@
 
     <div class="historial-container">
         <h2>Historial de Pagos</h2>
-        <ul id="listaPagos">
-            </ul>
+        <ul id="listaPagos"></ul>
         <button class="btn-descargar" onclick="descargarReporte()">DESCARGAR REPORTE .TXT</button>
     </div>
 
     <script>
         // --- CONFIGURA LOS MONTOS AQUÍ ---
         const PRECIOS = {
-            escenario: 0,       // Baile escenario
-            privadoSolo: 0,     // Baile privado solo
-            completo: 0         // Privado completo
+            escenario: 5000,       
+            privadoSolo: 15000,     
+            completo: 35000         
         };
 
-        // Mostrar precios en la interfaz
         document.getElementById('pEscenario').innerText = `$${PRECIOS.escenario}`;
         document.getElementById('pPrivadoSolo').innerText = `$${PRECIOS.privadoSolo}`;
         document.getElementById('pCompleto').innerText = `$${PRECIOS.completo}`;
 
-        // Lógica de actualización de precio en tiempo real
         const checkboxes = document.querySelectorAll('input[type="checkbox"]');
         checkboxes.forEach(cb => {
             cb.addEventListener('change', () => {
