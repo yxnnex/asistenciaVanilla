@@ -256,13 +256,14 @@
             let txt = "VANILLA UNICORN - REPORTE DE ASISTENCIA\n";
             txt += "========================================\n\n";
             
-            // 1. LISTADO CRONOLÓGICO (Como lo tenías antes)
-            txt += "DETALLE DE SERVICIOS:\n";
+            // 1. LISTADO CRONOLÓGICO (Con las horas como querías)
+            txt += "DETALLE DE SERVICIOS POR HORA:\n";
+            txt += "----------------------------------------\n";
             let sumaTotalTurno = 0;
             const resumenNombres = {};
 
             registrosGlobal.forEach(r => {
-                txt += `[${r.hora}] ${r.nombre} | ${r.servicios} | Pago: $${r.monto}\n`;
+                txt += `[${r.hora}] ${r.nombre.padEnd(10)} | ${r.servicios.padEnd(20)} | Pago: $${r.monto}\n`;
                 sumaTotalTurno += r.monto;
 
                 // Preparar datos para el resumen final
@@ -271,12 +272,12 @@
             });
 
             txt += "\n========================================\n";
-            txt += "RESUMEN TOTAL POR EMPLEADA:\n";
+            txt += "RESUMEN TOTAL A PAGAR POR PERSONA:\n";
             txt += "========================================\n";
 
-            // 2. RESUMEN FINAL POR NOMBRE
+            // 2. RESUMEN FINAL AGRUPADO (Para no sumar a mano)
             for (const chica in resumenNombres) {
-                txt += `${chica.padEnd(15)} Total a pagar: $${resumenNombres[chica]}\n`;
+                txt += `EMPLEADA: ${chica.padEnd(12)} TOTAL FINAL: $${resumenNombres[chica]}\n`;
             }
 
             txt += "\n========================================\n";
@@ -285,7 +286,7 @@
             const blob = new Blob([txt], {type: "text/plain"});
             const a = document.createElement("a");
             a.href = URL.createObjectURL(blob);
-            a.download = `Reporte_VU_${new Date().toLocaleDateString().replace(/\//g, '-')}.txt`;
+            a.download = `Reporte_VU_Completo.txt`;
             a.click();
         }
     </script>
