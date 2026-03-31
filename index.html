@@ -4,291 +4,117 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vanilla Unicorn – Registro de Asistencia</title>
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pangolin&display=swap" rel="stylesheet">
-
     <style>
-        :root {
-            --neon-pink: #ff71ce;
-            --neon-blue: #00f3ff;
-            --neon-purple: #b967ff;
-            --dark-bg: #050505;
-        }
-
-        body { 
-            font-family: 'Pangolin', cursive; 
-            background: var(--dark-bg); 
-            color: var(--neon-pink); 
-            margin: 0; 
-            padding: 20px; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .logo-neon { 
-            display: block; 
-            margin: 20px auto; 
-            width: 160px; 
-            filter: drop-shadow(0 0 15px rgba(255, 113, 206, 0.9)); 
-        }
-
-        h1 { 
-            text-align: center; 
-            font-size: 38px; 
-            color: #fff; 
-            text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink);
-            margin-bottom: 20px;
-        }
-
-        .container {
-            background: rgba(20, 20, 20, 0.9);
-            border: 2px solid var(--neon-pink);
-            border-radius: 25px;
-            padding: 25px;
-            box-shadow: 0 0 20px rgba(255, 113, 206, 0.2);
-            width: 95%;
-            max-width: 550px;
-            margin-bottom: 30px;
-        }
-
-        label { display: block; margin-bottom: 10px; font-size: 18px; color: #fff; }
-
-        select {
-            width: 100%;
-            padding: 12px;
-            border-radius: 12px;
-            border: 1px solid var(--neon-pink);
-            background: #1a1a1a;
-            color: #fff;
-            font-family: 'Pangolin', cursive;
-            font-size: 18px;
-            margin-bottom: 20px;
-            outline: none;
-            box-shadow: inset 0 0 5px var(--neon-pink);
-        }
-
-        .opciones-pago {
-            background: rgba(255, 113, 206, 0.05);
-            padding: 15px;
-            border-radius: 15px;
-            border: 1px dashed var(--neon-pink);
-            margin-bottom: 20px;
-        }
-
-        .check-container {
-            display: flex;
-            align-items: center;
-            margin-bottom: 12px;
-            font-size: 17px;
-            color: #ddd;
-            cursor: pointer;
-        }
-
+        :root { --neon-pink: #ff71ce; --neon-blue: #00f3ff; --dark-bg: #050505; }
+        body { font-family: 'Pangolin', cursive; background: var(--dark-bg); color: var(--neon-pink); padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .logo-neon { display: block; margin: 20px auto; width: 160px; filter: drop-shadow(0 0 15px rgba(255, 113, 206, 0.9)); }
+        h1 { text-align: center; font-size: 38px; color: #fff; text-shadow: 0 0 10px var(--neon-pink); }
+        .container, .historial-container { background: rgba(20, 20, 20, 0.9); border: 2px solid var(--neon-pink); border-radius: 25px; padding: 25px; box-shadow: 0 0 20px rgba(255, 113, 206, 0.2); width: 95%; max-width: 550px; margin-bottom: 30px; }
+        select { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--neon-pink); background: #1a1a1a; color: #fff; font-family: 'Pangolin'; font-size: 18px; margin-bottom: 20px; outline: none; }
+        .opciones-pago { background: rgba(255, 113, 206, 0.05); padding: 15px; border-radius: 15px; border: 1px dashed var(--neon-pink); margin-bottom: 20px; }
+        .check-container { display: flex; align-items: center; margin-bottom: 12px; font-size: 17px; color: #ddd; cursor: pointer; }
         .check-container input { margin-right: 12px; width: 20px; height: 20px; accent-color: var(--neon-pink); }
-
-        .total-box { text-align: center; border-top: 1px solid var(--neon-pink); padding-top: 15px; }
-        .total-monto { font-size: 45px; color: #fff; text-shadow: 0 0 10px var(--neon-blue); display: block; margin-bottom: 15px; }
-
-        button {
-            width: 100%;
-            padding: 15px;
-            border-radius: 15px;
-            font-family: 'Pangolin', cursive;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .btn-registrar { background: var(--neon-pink); color: #000; border: none; box-shadow: 0 0 10px var(--neon-pink); }
-        .btn-registrar:hover { transform: scale(1.02); box-shadow: 0 0 20px var(--neon-pink); }
-
-        .historial-container {
-            width: 95%;
-            max-width: 550px;
-            background: rgba(10, 10, 10, 0.9);
-            border: 1px solid var(--neon-blue);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
-        }
-
-        h2 { font-size: 22px; color: var(--neon-blue); text-align: center; text-transform: uppercase; margin-top: 0; }
-
+        .total-monto { font-size: 45px; color: #fff; text-shadow: 0 0 10px var(--neon-blue); display: block; text-align: center; margin-bottom: 15px; }
+        button { width: 100%; padding: 15px; border-radius: 15px; font-family: 'Pangolin'; font-size: 20px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-registrar { background: var(--neon-pink); color: #000; border: none; }
+        .btn-descargar { background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue); margin-top: 15px; }
         #listaPagos { list-style: none; padding: 0; max-height: 300px; overflow-y: auto; }
-
-        .pago-item {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            font-size: 15px;
-            border-left: 4px solid var(--neon-blue);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .btn-descargar {
-            background: transparent;
-            border: 1px solid var(--neon-blue);
-            color: var(--neon-blue);
-            font-size: 16px;
-            margin-top: 15px;
-        }
-
-        .btn-descargar:hover { background: var(--neon-blue); color: #000; }
-        
-        .precio-tag { margin-left: auto; color: var(--neon-blue); font-size: 14px; font-weight: bold; }
+        .pago-item { background: rgba(255, 255, 255, 0.05); padding: 10px; border-radius: 8px; margin-bottom: 8px; border-left: 4px solid var(--neon-blue); display: flex; justify-content: space-between; align-items: center; }
     </style>
 </head>
 <body>
-
     <img src="VU_LOGO_OFFICIAL.png" class="logo-neon" alt="Vanilla Unicorn">
-    
-    <h1>Vanilla Unicorn <br> <span style="font-size: 18px; color: var(--neon-blue);">Gestión de Asistencia</span></h1>
-
+    <h1>Vanilla Unicorn</h1>
     <div class="container">
         <label>Seleccionar Empleada</label>
         <select id="empleada">
-            <option value="">-- Nombre Apellido --</option>
-            <option>Anya</option><option>Ashanti</option><option>Cleo</option>
-            <option>Jade</option><option>Mei</option><option>Raven</option>
-            <option>Sadie</option><option>Saher</option><option>Sheila</option>
+            <option value="">-- Nombre --</option>
+            <option>Anya</option>
+            <option>Ashanti</option>
+            <option>Cleo</option>
+            <option>Jade</option>
+            <option>Maddy</option>
+            <option>Mei</option>
+            <option>Raven</option>
+            <option>Sadie</option>
+            <option>Saher</option>
+            <option>Sheila</option>
             <option>Valentina</option>
         </select>
-
         <div class="opciones-pago">
-            <label class="check-container"><input type="checkbox" id="barra"> Barra <span class="precio-tag">$0</span></label>
-            <label class="check-container"><input type="checkbox" id="baileEscenario"> Baile Escenario <span id="pEscenario" class="precio-tag"></span></label>
-            <label class="check-container"><input type="checkbox" id="bailePrivado"> Baile Privado <span id="pPrivadoSolo" class="precio-tag"></span></label>
-            <label class="check-container"><input type="checkbox" id="privadoCompleto"> Privado Completo <span id="pCompleto" class="precio-tag"></span></label>
+            <label class="check-container"><input type="checkbox" id="barra"> Barra <span>$0</span></label>
+            <label class="check-container"><input type="checkbox" id="baileEscenario"> Escenario <span>$5000</span></label>
+            <label class="check-container"><input type="checkbox" id="bailePrivado"> B. Privado <span>$25000</span></label>
+            <label class="check-container"><input type="checkbox" id="privadoCompleto"> P. Completo <span>$60000</span></label>
         </div>
-
-        <div class="total-box">
-            <span style="color: #bbb; font-size: 14px;">TOTAL A PAGAR</span>
-            <span class="total-monto" id="montoTotal">$0</span>
-            <button class="btn-registrar" onclick="registrarPago()">REGISTRAR Y LIMPIAR</button>
-        </div>
+        <span class="total-monto" id="montoTotal">$0</span>
+        <button class="btn-registrar" onclick="registrarPago()">REGISTRAR Y LIMPIAR</button>
     </div>
-
     <div class="historial-container">
-        <h2>Historial de Pagos</h2>
+        <h2 style="color: var(--neon-blue); text-align: center;">Historial del Turno</h2>
         <ul id="listaPagos"></ul>
-        <button class="btn-descargar" onclick="descargarReporte()">DESCARGAR REPORTE .TXT</button>
+        <button class="btn-descargar" onclick="descargarReporte()">DESCARGAR REPORTE FINAL</button>
     </div>
 
     <script>
-        const PRECIOS = {
-            escenario: 5000,       
-            privadoSolo: 25000,     
-            completo: 60000         
-        };
-
-        document.getElementById('pEscenario').innerText = `$${PRECIOS.escenario}`;
-        document.getElementById('pPrivadoSolo').innerText = `$${PRECIOS.privadoSolo}`;
-        document.getElementById('pCompleto').innerText = `$${PRECIOS.completo}`;
-
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(cb => {
-            cb.addEventListener('change', () => {
-                let total = 0;
-                if(document.getElementById('baileEscenario').checked) total += PRECIOS.escenario;
-                if(document.getElementById('bailePrivado').checked) total += PRECIOS.privadoSolo;
-                if(document.getElementById('privadoCompleto').checked) total += PRECIOS.completo;
-                document.getElementById('montoTotal').innerText = `$${total}`;
-            });
-        });
-
+        const PRECIOS = { escenario: 5000, privadoSolo: 25000, completo: 60000 };
         let registrosGlobal = [];
 
         function registrarPago() {
             const nombre = document.getElementById('empleada').value;
-            if(!nombre) { alert("Elige una empleada primero."); return; }
-
-            let acts = [];
-            let total = 0;
-
+            if(!nombre) return alert("Elige una empleada.");
+            let acts = []; let total = 0;
             if(document.getElementById('barra').checked) acts.push("Barra");
             if(document.getElementById('baileEscenario').checked) { acts.push("Escenario"); total += PRECIOS.escenario; }
             if(document.getElementById('bailePrivado').checked) { acts.push("B. Privado"); total += PRECIOS.privadoSolo; }
             if(document.getElementById('privadoCompleto').checked) { acts.push("P. Completo"); total += PRECIOS.completo; }
+            if(acts.length === 0) return alert("Elige actividad.");
 
-            if(acts.length === 0) { alert("Selecciona al menos una actividad."); return; }
-
-            const registro = {
-                nombre: nombre,
-                servicios: acts.join(" + "),
-                monto: total,
-                hora: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
-            };
-
-            registrosGlobal.push(registro);
+            registrosGlobal.push({ nombre, servicios: acts.join(" + "), monto: total, hora: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) });
             actualizarLista();
-            resetForm();
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            document.getElementById('empleada').selectedIndex = 0;
+            document.getElementById('montoTotal').innerText = "$0";
         }
 
         function actualizarLista() {
             const lista = document.getElementById('listaPagos');
             lista.innerHTML = "";
             registrosGlobal.slice().reverse().forEach(r => {
-                lista.innerHTML += `
-                    <li class="pago-item">
-                        <span><strong>${r.nombre}</strong><br><small style="color:#888">${r.servicios} [${r.hora}]</small></span>
-                        <span style="color:var(--neon-blue); font-weight:bold;">$${r.monto}</span>
-                    </li>
-                `;
+                lista.innerHTML += `<li class="pago-item"><span><strong>${r.nombre}</strong><br><small>${r.servicios} [${r.hora}]</small></span><b>$${r.monto}</b></li>`;
             });
-        }
-
-        function resetForm() {
-            document.getElementById('empleada').selectedIndex = 0;
-            checkboxes.forEach(cb => cb.checked = false);
-            document.getElementById('montoTotal').innerText = "$0";
         }
 
         function descargarReporte() {
             if(registrosGlobal.length === 0) return;
-
-            let txt = "VANILLA UNICORN - REPORTE DE ASISTENCIA\n";
-            txt += "========================================\n\n";
-            
-            // 1. LISTADO CRONOLÓGICO (Con las horas como querías)
-            txt += "DETALLE DE SERVICIOS POR HORA:\n";
-            txt += "----------------------------------------\n";
-            let sumaTotalTurno = 0;
-            const resumenNombres = {};
-
+            let txt = "REPORTE VANILLA UNICORN\n========================\n\nDETALLE:\n";
+            const resumen = {};
             registrosGlobal.forEach(r => {
-                txt += `[${r.hora}] ${r.nombre.padEnd(10)} | ${r.servicios.padEnd(20)} | Pago: $${r.monto}\n`;
-                sumaTotalTurno += r.monto;
-
-                // Preparar datos para el resumen final
-                if (!resumenNombres[r.nombre]) resumenNombres[r.nombre] = 0;
-                resumenNombres[r.nombre] += r.monto;
+                txt += `[${r.hora}] ${r.nombre} | ${r.servicios} | $${r.monto}\n`;
+                if(!resumen[r.nombre]) resumen[r.nombre] = 0;
+                resumen[r.nombre] += r.monto;
             });
-
-            txt += "\n========================================\n";
-            txt += "RESUMEN TOTAL A PAGAR POR PERSONA:\n";
-            txt += "========================================\n";
-
-            // 2. RESUMEN FINAL AGRUPADO (Para no sumar a mano)
-            for (const chica in resumenNombres) {
-                txt += `EMPLEADA: ${chica.padEnd(12)} TOTAL FINAL: $${resumenNombres[chica]}\n`;
-            }
-
-            txt += "\n========================================\n";
-            txt += `TOTAL GENERAL CAJA: $${sumaTotalTurno}`;
-
+            txt += "\nTOTAL POR PERSONA:\n========================\n";
+            for(let n in resumen) txt += `${n}: $${resumen[n]}\n`;
+            
             const blob = new Blob([txt], {type: "text/plain"});
             const a = document.createElement("a");
             a.href = URL.createObjectURL(blob);
-            a.download = `Reporte_VU_Completo.txt`;
+            a.download = "Reporte_VU.txt";
             a.click();
         }
+
+        document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            cb.onchange = () => {
+                let t = 0;
+                if(document.getElementById('baileEscenario').checked) t += PRECIOS.escenario;
+                if(document.getElementById('bailePrivado').checked) t += PRECIOS.privadoSolo;
+                if(document.getElementById('privadoCompleto').checked) t += PRECIOS.completo;
+                document.getElementById('montoTotal').innerText = `$${t}`;
+            }
+        });
     </script>
 </body>
 </html>
