@@ -14,7 +14,8 @@
         .container, .historial-container { background: rgba(20, 20, 20, 0.9); border: 2px solid var(--neon-pink); border-radius: 25px; padding: 25px; box-shadow: 0 0 20px rgba(255, 113, 206, 0.2); width: 95%; max-width: 550px; margin-bottom: 30px; }
         select { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--neon-pink); background: #1a1a1a; color: #fff; font-family: 'Pangolin'; font-size: 18px; margin-bottom: 20px; outline: none; }
         .opciones-pago { background: rgba(255, 113, 206, 0.05); padding: 15px; border-radius: 15px; border: 1px dashed var(--neon-pink); margin-bottom: 20px; }
-        .check-container { display: flex; align-items: center; margin-bottom: 12px; font-size: 17px; color: #ddd; cursor: pointer; }
+        .check-container { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; font-size: 17px; color: #ddd; cursor: pointer; }
+        .check-inner { display: flex; align-items: center; }
         .check-container input { margin-right: 12px; width: 20px; height: 20px; accent-color: var(--neon-pink); }
         .total-monto { font-size: 45px; color: #fff; text-shadow: 0 0 10px var(--neon-blue); display: block; text-align: center; margin-bottom: 15px; }
         button { width: 100%; padding: 15px; border-radius: 15px; font-family: 'Pangolin'; font-size: 20px; font-weight: bold; cursor: pointer; transition: 0.3s; }
@@ -22,6 +23,7 @@
         .btn-descargar { background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue); margin-top: 15px; }
         #listaPagos { list-style: none; padding: 0; max-height: 300px; overflow-y: auto; }
         .pago-item { background: rgba(255, 255, 255, 0.05); padding: 10px; border-radius: 8px; margin-bottom: 8px; border-left: 4px solid var(--neon-blue); display: flex; justify-content: space-between; align-items: center; }
+        .precio-label { color: var(--neon-blue); font-weight: bold; }
     </style>
 </head>
 <body>
@@ -31,16 +33,23 @@
         <label>Seleccionar Empleada</label>
         <select id="empleada">
             <option value="">-- Nombre --</option>
-            <option>Anya</option><option>Ashanti</option><option>Cleo</option>
-            <option>Jade</option><option>Mei</option><option>Raven</option>
-            <option>Sadie</option><option>Saher</option><option>Sheila</option>
+            <option>Anya</option>
+            <option>Ashanti</option>
+            <option>Cleo</option>
+            <option>Jade</option>
+            <option>Maddy</option>
+            <option>Mei</option>
+            <option>Raven</option>
+            <option>Sadie</option>
+            <option>Saher</option>
+            <option>Sheila</option>
             <option>Valentina</option>
         </select>
         <div class="opciones-pago">
-            <label class="check-container"><input type="checkbox" id="barra"> Barra <span>$0</span></label>
-            <label class="check-container"><input type="checkbox" id="baileEscenario"> Escenario <span>$5000</span></label>
-            <label class="check-container"><input type="checkbox" id="bailePrivado"> B. Privado <span>$25000</span></label>
-            <label class="check-container"><input type="checkbox" id="privadoCompleto"> P. Completo <span>$60000</span></label>
+            <label class="check-container"><div class="check-inner"><input type="checkbox" id="barra"> Barra</div> <span class="precio-label">$0</span></label>
+            <label class="check-container"><div class="check-inner"><input type="checkbox" id="baileEscenario"> Escenario</div> <span class="precio-label">$5000</span></label>
+            <label class="check-container"><div class="check-inner"><input type="checkbox" id="bailePrivado"> B. Privado</div> <span class="precio-label">$25000</span></label>
+            <label class="check-container"><div class="check-inner"><input type="checkbox" id="privadoCompleto"> P. Completo</div> <span class="precio-label">$60000</span></label>
         </div>
         <span class="total-monto" id="montoTotal">$0</span>
         <button class="btn-registrar" onclick="registrarPago()">REGISTRAR Y LIMPIAR</button>
