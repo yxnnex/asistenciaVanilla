@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vanilla Unicorn – Registro Pro</title>
+    <title>Vanilla Unicorn – Registro de Servicios</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Pangolin&display=swap" rel="stylesheet">
     <style>
         :root { --neon-pink: #ff71ce; --neon-blue: #00f3ff; --dark-bg: #050505; }
         body { font-family: 'Pangolin', cursive; background: var(--dark-bg); color: var(--neon-pink); padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        .logo-neon { display: block; margin: 20px auto; width: 140px; filter: drop-shadow(0 0 15px rgba(255, 113, 206, 0.9)); }
+        .logo-neon { display: block; margin: 10px auto; width: 140px; filter: drop-shadow(0 0 15px rgba(255, 113, 206, 0.9)); }
         h1 { text-align: center; font-size: 32px; color: #fff; text-shadow: 0 0 10px var(--neon-pink); margin-top: 0; }
         
         .container, .historial-container { 
@@ -27,7 +27,7 @@
         
         select, input[type="number"] { 
             width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--neon-pink); 
-            background: #1a1a1a; color: #fff; font-family: 'Pangolin'; font-size: 18px; 
+            background: #1a1a1a; color: #fff; font-family: 'Pangolin'; font-size: 17px; 
             margin-bottom: 15px; outline: none; box-sizing: border-box;
         }
 
@@ -49,16 +49,17 @@
         button:active { transform: scale(0.98); }
 
         .lista-temporal { list-style: none; padding: 0; margin: 10px 0; border-top: 1px solid #333; }
-        .temp-item { font-size: 14px; color: #00f3ff; display: flex; justify-content: space-between; padding: 5px 0; }
+        .temp-item { font-size: 15px; color: #00f3ff; display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
 
-        .total-monto { font-size: 40px; color: #fff; text-shadow: 0 0 10px var(--neon-blue); display: block; text-align: center; margin: 10px 0; }
+        .total-monto { font-size: 45px; color: #fff; text-shadow: 0 0 10px var(--neon-blue); display: block; text-align: center; margin: 15px 0; }
 
-        #listaPagos { list-style: none; padding: 0; max-height: 250px; overflow-y: auto; }
+        #listaPagos { list-style: none; padding: 0; max-height: 300px; overflow-y: auto; }
         .pago-item { 
-            background: rgba(255, 255, 255, 0.05); padding: 10px; border-radius: 8px; 
-            margin-bottom: 8px; border-left: 4px solid var(--neon-blue); 
+            background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; 
+            margin-bottom: 10px; border-left: 4px solid var(--neon-blue); 
             display: flex; justify-content: space-between; align-items: center; 
         }
+        small { color: #888; font-size: 12px; }
     </style>
 </head>
 <body>
@@ -83,23 +84,23 @@
                 <option value="Barra" data-precio="0">Barra</option>
                 <option value="Escenario" data-precio="5000">Escenario</option>
                 <option value="Baile Privado" data-precio="25000">Baile Privado</option>
-                <option value="Privado Completo" data-precio="60000">Privado Completo</option>
+                <option value="Servicio Completo Exclusivo" data-precio="60000">Servicio Completo Exclusivo</option>
                 <option value="Otro" data-precio="0">Otro / Extra</option>
             </select>
-            <input type="number" id="precioManual" placeholder="Monto $">
-            <button class="btn-add" onclick="agregarAListaTemporal()">+ AÑADIR SERVICIO</button>
+            <input type="number" id="precioManual" placeholder="Monto pactado $">
+            <button class="btn-add" onclick="agregarAListaTemporal()">+ AÑADIR A LA CUENTA</button>
         </div>
 
         <ul id="listaTemporal" class="lista-temporal"></ul>
         
         <span class="total-monto" id="montoTotal">$0</span>
-        <button class="btn-registrar" onclick="registrarFinal()">REGISTRAR Y LIMPIAR</button>
+        <button class="btn-registrar" onclick="registrarFinal()">REGISTRAR SERVICIOS Y LIMPIAR</button>
     </div>
 
     <div class="historial-container">
         <h2 style="color: var(--neon-blue); text-align: center; margin-top: 0;">Historial del Turno</h2>
         <ul id="listaPagos"></ul>
-        <button style="background: transparent; border: 1px solid #555; color: #888;" onclick="descargarReporte()">DESCARGAR REPORTE TXT</button>
+        <button style="background: transparent; border: 1px solid #444; color: #888;" onclick="descargarReporte()">DESCARGAR REPORTE FINAL</button>
     </div>
 
     <script>
@@ -110,21 +111,26 @@
         function sugerirPrecio() {
             const select = document.getElementById('servicio');
             const precioSugerido = select.options[select.selectedIndex].getAttribute('data-precio');
-            document.getElementById('precioManual').value = precioSugerido;
+            if (precioSugerido !== null) {
+                document.getElementById('precioManual').value = precioSugerido;
+            }
         }
 
         function agregarAListaTemporal() {
             const serv = document.getElementById('servicio').value;
-            const monto = parseInt(document.getElementById('precioManual').value);
+            const montoInput = document.getElementById('precioManual').value;
+            const monto = parseInt(montoInput);
 
-            if (!serv || isNaN(monto)) return alert("Selecciona servicio y pon un precio.");
+            if (!serv || isNaN(monto)) {
+                return alert("Por favor, selecciona un servicio e ingresa el precio.");
+            }
 
             serviciosTurnoActual.push({ servicio: serv, monto: monto });
             totalAcumulado += monto;
             
             actualizarUI();
             
-            // Limpiar inputs de servicio
+            // Resetear solo la parte del servicio
             document.getElementById('servicio').selectedIndex = 0;
             document.getElementById('precioManual').value = "";
         }
@@ -140,8 +146,8 @@
 
         function registrarFinal() {
             const nombre = document.getElementById('empleada').value;
-            if (!nombre) return alert("Selecciona una empleada.");
-            if (serviciosTurnoActual.length === 0) return alert("No hay servicios agregados.");
+            if (!nombre) return alert("Primero selecciona a la empleada.");
+            if (serviciosTurnoActual.length === 0) return alert("No has añadido ningún servicio aún.");
 
             const nombresServicios = serviciosTurnoActual.map(s => s.servicio).join(" + ");
             const hora = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
@@ -153,7 +159,7 @@
                 hora: hora
             });
 
-            // Limpiar todo para la siguiente
+            // Limpieza total
             serviciosTurnoActual = [];
             totalAcumulado = 0;
             document.getElementById('empleada').selectedIndex = 0;
@@ -166,30 +172,35 @@
         function actualizarListaHistorial() {
             const lista = document.getElementById('listaPagos');
             lista.innerHTML = "";
+            // Mostramos los más recientes primero
             registrosGlobal.slice().reverse().forEach(r => {
                 lista.innerHTML += `
                     <li class="pago-item">
                         <span><strong>${r.nombre}</strong><br><small>${r.servicios} [${r.hora}]</small></span>
-                        <b>$${r.monto}</b>
+                        <b style="color: #fff;">$${r.monto}</b>
                     </li>`;
             });
         }
 
         function descargarReporte() {
-            if(registrosGlobal.length === 0) return;
+            if(registrosGlobal.length === 0) return alert("No hay datos para exportar.");
             let txt = "REPORTE VANILLA UNICORN\n========================\n\n";
             const resumen = {};
+            
             registrosGlobal.forEach(r => {
                 txt += `[${r.hora}] ${r.nombre} | ${r.servicios} | $${r.monto}\n`;
                 resumen[r.nombre] = (resumen[r.nombre] || 0) + r.monto;
             });
-            txt += "\nTOTAL POR PERSONA:\n========================\n";
-            for(let n in resumen) txt += `${n}: $${resumen[n]}\n`;
+            
+            txt += "\nTOTAL ACUMULADO POR EMPLEADA:\n========================\n";
+            for(let n in resumen) {
+                txt += `${n}: $${resumen[n]}\n`;
+            }
             
             const blob = new Blob([txt], {type: "text/plain"});
             const a = document.createElement("a");
             a.href = URL.createObjectURL(blob);
-            a.download = "Reporte_VU.txt";
+            a.download = "Reporte_V_Unicorn.txt";
             a.click();
         }
     </script>
